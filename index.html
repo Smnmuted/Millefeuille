@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Millefeuille — Pâtisserie Française</title>
+<meta name="description" content="Millefeuille — pâtisserie franceză în Chișinău. Mille-feuille, croissante, tarte, cafea de specialitate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --vanilla: #FAF6EF;
+    --vanilla-2: #F3ECDF;
+    --espresso: #1C1A17;
+    --espresso-soft: #2C2823;
+    --caramel: #B8895E;
+    --caramel-deep: #93673F;
+    --cream-layer: #E8DCC8;
+    --pistache: #7A8B6F;
+    --berry: #C44536;
+
+    --display: 'Fraunces', serif;
+    --body: 'Work Sans', sans-serif;
+    --mono: 'Space Mono', monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--vanilla);
+    color:var(--espresso);
+    font-family:var(--body);
+    font-weight:400;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+  :focus-visible{
+    outline:2px solid var(--berry);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ============ NAV ============ */
+  nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 32px;
+    background:rgba(250,246,239,0.0);
+    transition:background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+  }
+  nav.scrolled{
+    background:rgba(250,246,239,0.92);
+    backdrop-filter:blur(10px);
+    padding:14px 32px;
+    box-shadow:0 1px 0 rgba(28,26,23,0.08);
+  }
+  .nav-mark{
+    font-family:var(--display);
+    font-size:22px;
+    font-weight:500;
+    letter-spacing:0.01em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .nav-mark svg{height:20px;width:auto;}
+  .nav-links{
+    display:flex;
+    gap:36px;
+    font-size:14px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+  }
+  .nav-links a{
+    position:relative;
+    padding-bottom:4px;
+    opacity:0.82;
+    transition:opacity 0.2s ease;
+  }
+  .nav-links a:hover{opacity:1;}
+  .nav-links a::after{
+    content:'';
+    position:absolute;
+    left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--caramel-deep);
+    transition:width 0.25s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    font-size:13px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    padding:10px 20px;
+    border:1px solid var(--espresso);
+    border-radius:2px;
+    transition:background 0.25s ease, color 0.25s ease;
+  }
+  .nav-cta:hover{background:var(--espresso);color:var(--vanilla);}
+  .nav-toggle{display:none;}
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+    padding-top:90px;
+  }
+  .layers{
+    position:absolute;
+    inset:0;
+    z-index:0;
+  }
+  .layer{
+    position:absolute;
+    left:-5%;
+    right:-5%;
+    border-radius:50%;
+    transition:transform 1.4s cubic-bezier(0.16,1,0.3,1), opacity 1.2s ease;
+    opacity:0;
+  }
+  .layer.show{opacity:1;}
+  .l1{top:-18%; height:46%; background:var(--cream-layer); transform:translateY(-40px);}
+  .l1.show{transform:translateY(-60px);}
+  .l2{top:8%; height:40%; background:var(--vanilla-2); transform:translateY(-20px);}
+  .l2.show{transform:translateY(-25px);}
+  .l3{top:32%; height:42%; background:var(--cream-layer); opacity:0.6; transform:translateY(0px);}
+  .l3.show{opacity:0.55; transform:translateY(10px);}
+  .l4{top:58%; height:46%; background:var(--vanilla-2); transform:translateY(20px);}
+  .l4.show{transform:translateY(45px);}
+  .l5{top:80%; height:40%; background:var(--cream-layer); transform:translateY(30px);}
+  .l5.show{transform:translateY(70px);}
+
+  .hero-content{
+    position:relative;
+    z-index:2;
+    padding:0 32px;
+    max-width:1180px;
+    margin:0 auto;
+    width:100%;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:0.08em;
+    color:var(--caramel-deep);
+    text-transform:uppercase;
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:28px;height:1px;
+    background:var(--caramel-deep);
+  }
+  .hero h1{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:clamp(48px, 9vw, 122px);
+    line-height:0.96;
+    letter-spacing:-0.01em;
+    max-width:980px;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--caramel-deep);
+  }
+  .hero-sub{
+    margin-top:28px;
+    font-size:clamp(16px,2vw,19px);
+    max-width:480px;
+    color:var(--espresso-soft);
+    font-weight:300;
+  }
+  .hero-actions{
+    margin-top:44px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:15px 28px;
+    font-size:14px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    border-radius:2px;
+    transition:transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+  .btn-primary{
+    background:var(--espresso);
+    color:var(--vanilla);
+  }
+  .btn-primary:hover{background:var(--caramel-deep); transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid rgba(28,26,23,0.3);
+    color:var(--espresso);
+  }
+  .btn-ghost:hover{border-color:var(--espresso); transform:translateY(-2px);}
+
+  .hero-scroll{
+    position:absolute;
+    bottom:36px;
+    left:32px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.06em;
+    color:var(--espresso-soft);
+    text-transform:uppercase;
+  }
+  .hero-scroll .line{
+    width:1px;height:38px;
+    background:var(--espresso-soft);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-scroll .line::after{
+    content:'';
+    position:absolute;
+    top:0;left:0;width:100%;height:40%;
+    background:var(--caramel-deep);
+    animation:scrollLine 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollLine{
+    0%{top:-40%;}
+    100%{top:100%;}
+  }
+
+  /* ============ WAVE DIVIDER ============ */
+  .wave{
+    display:block;
+    width:100%;
+    height:56px;
+    position:relative;
+    z-index:2;
+  }
+  .wave-cream{background:var(--vanilla);}
+  .wave-espresso{background:var(--espresso);}
+
+  /* ============ SECTION SHARED ============ */
+  section{
+    position:relative;
+    padding:120px 0;
+  }
+  .section-head{
+    margin-bottom:64px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:40px;
+    flex-wrap:wrap;
+  }
+  .section-head .eyebrow{margin-bottom:18px;}
+  .section-head h2{
+    font-family:var(--display);
+    font-size:clamp(34px,5vw,56px);
+    font-weight:400;
+    line-height:1.05;
+    max-width:560px;
+  }
+  .section-head p{
+    max-width:340px;
+    font-size:15px;
+    color:var(--espresso-soft);
+    font-weight:300;
+    padding-bottom:6px;
+  }
+
+  /* ============ ABOUT ============ */
+  .about{background:var(--vanilla);}
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:80px;
+    align-items:start;
+  }
+  .about-text p{
+    font-size:18px;
+    font-weight:300;
+    color:var(--espresso-soft);
+    margin-bottom:22px;
+    max-width:520px;
+  }
+  .about-text p:first-of-type{
+    font-family:var(--display);
+    font-size:26px;
+    font-style:italic;
+    color:var(--espresso);
+    font-weight:400;
+    line-height:1.4;
+  }
+  .stat-row{
+    display:flex;
+    gap:48px;
+    margin-top:48px;
+    padding-top:32px;
+    border-top:1px solid rgba(28,26,23,0.12);
+  }
+  .stat-num{
+    font-family:var(--display);
+    font-size:38px;
+    color:var(--caramel-deep);
+    font-style:italic;
+  }
+  .stat-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--espresso-soft);
+    margin-top:6px;
+  }
+  .about-card{
+    background:var(--cream-layer);
+    border-radius:4px;
+    padding:44px;
+    position:relative;
+  }
+  .about-card .quote-mark{
+    font-family:var(--display);
+    font-size:80px;
+    line-height:0.6;
+    color:var(--caramel);
+    font-style:italic;
+    display:block;
+    margin-bottom:12px;
+  }
+  .about-card p{
+    font-family:var(--display);
+    font-size:21px;
+    font-style:italic;
+    line-height:1.5;
+    color:var(--espresso);
+  }
+  .about-card .sig{
+    margin-top:24px;
+    font-family:var(--mono);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    color:var(--espresso-soft);
+  }
+
+  /* ============ MENU ============ */
+  .menu{background:var(--espresso); color:var(--vanilla);}
+  .menu .section-head h2{color:var(--vanilla);}
+  .menu .section-head p{color:rgba(250,246,239,0.6);}
+  .menu .eyebrow{color:var(--caramel);}
+  .menu .eyebrow::before{background:var(--caramel);}
+
+  .menu-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:48px;
+    flex-wrap:wrap;
+  }
+  .menu-tab{
+    padding:10px 20px;
+    font-size:13px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    border:1px solid rgba(250,246,239,0.25);
+    border-radius:2px;
+    color:rgba(250,246,239,0.7);
+    transition:all 0.2s ease;
+  }
+  .menu-tab:hover{border-color:rgba(250,246,239,0.6); color:var(--vanilla);}
+  .menu-tab.active{
+    background:var(--caramel);
+    border-color:var(--caramel);
+    color:var(--espresso);
+  }
+
+  .menu-grid{
+    display:none;
+    grid-template-columns:repeat(2,1fr);
+    gap:0 56px;
+  }
+  .menu-grid.active{display:grid;}
+
+  .menu-item{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    padding:22px 0;
+    border-bottom:1px solid rgba(250,246,239,0.12);
+  }
+  .menu-item-name{
+    font-family:var(--display);
+    font-size:19px;
+    font-weight:400;
+  }
+  .menu-item-desc{
+    font-size:13.5px;
+    color:rgba(250,246,239,0.55);
+    margin-top:6px;
+    font-weight:300;
+    max-width:320px;
+  }
+  .menu-item-price{
+    font-family:var(--mono);
+    font-size:15px;
+    color:var(--caramel);
+    white-space:nowrap;
+    padding-top:2px;
+  }
+  .menu-tag{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--pistache);
+    margin-top:8px;
+  }
+  .menu-note{
+    margin-top:40px;
+    font-size:13px;
+    color:rgba(250,246,239,0.45);
+    font-style:italic;
+    font-family:var(--display);
+  }
+
+  /* ============ GALLERY STRIP ============ */
+  .gallery{
+    background:var(--vanilla);
+    padding:0;
+  }
+  .gallery-strip{
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1.1fr 0.9fr;
+    height:340px;
+  }
+  .gallery-strip > div{
+    position:relative;
+    overflow:hidden;
+  }
+  .gallery-strip > div::before{
+    content:attr(data-label);
+    position:absolute;
+    bottom:18px;left:18px;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--vanilla);
+    z-index:2;
+  }
+  .gallery-strip > div::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(28,26,23,0) 50%, rgba(28,26,23,0.55) 100%);
+  }
+  .g1{background:linear-gradient(135deg, var(--caramel) 0%, var(--caramel-deep) 100%);}
+  .g2{background:linear-gradient(135deg, var(--cream-layer) 0%, var(--vanilla-2) 100%);}
+  .g3{background:linear-gradient(135deg, var(--pistache) 0%, #5e6e54 100%);}
+  .g4{background:linear-gradient(135deg, var(--berry) 0%, #9a3327 100%);}
+  .g2::before{color:var(--espresso);}
+
+  /* ============ LOCATION ============ */
+  .location{background:var(--vanilla-2);}
+  .location-grid{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:80px;
+  }
+  .info-block{
+    margin-bottom:36px;
+  }
+  .info-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--caramel-deep);
+    margin-bottom:10px;
+  }
+  .info-value{
+    font-family:var(--display);
+    font-size:24px;
+    font-weight:400;
+  }
+  .info-value a:hover{color:var(--caramel-deep);}
+  .hours-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:6px;
+  }
+  .hours-table td{
+    padding:9px 0;
+    font-size:15px;
+    border-bottom:1px solid rgba(28,26,23,0.1);
+  }
+  .hours-table td:first-child{color:var(--espresso-soft); font-weight:400;}
+  .hours-table td:last-child{
+    text-align:right;
+    font-family:var(--mono);
+    font-size:13.5px;
+  }
+  .social-row{
+    display:flex;
+    gap:14px;
+    margin-top:8px;
+  }
+  .social-row a{
+    width:42px;height:42px;
+    border:1px solid rgba(28,26,23,0.25);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all 0.2s ease;
+  }
+  .social-row a:hover{
+    background:var(--espresso);
+    border-color:var(--espresso);
+    color:var(--vanilla);
+  }
+
+  .map-frame{
+    position:relative;
+    border-radius:4px;
+    overflow:hidden;
+    min-height:420px;
+    background:var(--cream-layer);
+  }
+  .map-frame iframe{
+    width:100%;height:100%;
+    min-height:420px;
+    border:0;
+    filter:grayscale(0.15) contrast(1.05);
+    position:relative;
+    z-index:1;
+  }
+  .map-pin{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-100%);
+    z-index:2;
+    pointer-events:none;
+    display:none;
+  }
+
+  /* ============ FOOTER ============ */
+  footer{
+    background:var(--espresso);
+    color:var(--vanilla);
+    padding:64px 0 32px;
+  }
+  .footer-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:40px;
+    padding-bottom:48px;
+    border-bottom:1px solid rgba(250,246,239,0.12);
+  }
+  .footer-mark{
+    font-family:var(--display);
+    font-size:30px;
+    font-style:italic;
+  }
+  .footer-tag{
+    font-size:13px;
+    color:rgba(250,246,239,0.5);
+    margin-top:10px;
+    max-width:280px;
+    font-weight:300;
+  }
+  .footer-cols{
+    display:flex;
+    gap:64px;
+  }
+  .footer-col-title{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:rgba(250,246,239,0.4);
+    margin-bottom:14px;
+  }
+  .footer-col a, .footer-col p{
+    display:block;
+    font-size:14.5px;
+    padding:5px 0;
+    color:rgba(250,246,239,0.85);
+  }
+  .footer-col a:hover{color:var(--caramel);}
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    padding-top:28px;
+    font-size:12.5px;
+    color:rgba(250,246,239,0.35);
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  /* ============ REVEAL ANIM ============ */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width:880px){
+    .about-grid, .location-grid{grid-template-columns:1fr; gap:48px;}
+    .menu-grid{grid-template-columns:1fr;}
+    .gallery-strip{grid-template-columns:1fr 1fr; height:auto;}
+    .gallery-strip > div{height:220px;}
+    .nav-links{display:none;}
+    .footer-cols{gap:36px;}
+    .footer-top{flex-direction:column;}
+  }
+  @media (max-width:560px){
+    .wrap, .hero-content{padding-left:20px; padding-right:20px;}
+    nav{padding:18px 20px;}
+    section{padding:80px 0;}
+    .gallery-strip{grid-template-columns:1fr;}
+    .stat-row{gap:28px; flex-wrap:wrap;}
+    .footer-cols{flex-direction:column; gap:24px;}
+    .hero-scroll{left:20px;}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-mark">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M3 8 Q12 4 21 8" stroke="currentColor" stroke-width="1.4"/><path d="M3 12 Q12 8 21 12" stroke="currentColor" stroke-width="1.4"/><path d="M3 16 Q12 12 21 16" stroke="currentColor" stroke-width="1.4"/></svg>
+    Millefeuille
+  </div>
+  <div class="nav-links">
+    <a href="#despre">Despre</a>
+    <a href="#meniu">Meniu</a>
+    <a href="#galerie">Galerie</a>
+    <a href="#locatie">Locație</a>
+  </div>
+  <a href="#locatie" class="nav-cta">Rezervă o masă</a>
+</nav>
+
+<header class="hero">
+  <div class="layers" id="layers">
+    <div class="layer l1" data-show></div>
+    <div class="layer l2" data-show></div>
+    <div class="layer l3" data-show></div>
+    <div class="layer l4" data-show></div>
+    <div class="layer l5" data-show></div>
+  </div>
+  <div class="hero-content">
+    <div class="eyebrow">Pâtisserie franceză · Chișinău</div>
+    <h1>O mie de <em>straturi</em>,<br>un singur loc.</h1>
+    <p class="hero-sub">Mille-feuille, croissante cu unt și cafea de specialitate — coapte în fiecare dimineață, în inima orașului.</p>
+    <div class="hero-actions">
+      <a href="#meniu" class="btn btn-primary">Vezi meniul</a>
+      <a href="#locatie" class="btn btn-ghost">Cum ajungem</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span class="line"></span> Scroll</div>
+</header>
+
+<svg class="wave wave-cream" viewBox="0 0 1200 56" preserveAspectRatio="none"><path d="M0,28 C150,56 350,0 600,28 C850,56 1050,0 1200,28 L1200,56 L0,56 Z" fill="#1C1A17"></path></svg>
+
+<section class="about" id="despre">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="eyebrow">Despre noi</div>
+        <p>Numele nostru vine de la desertul cu o mie de foi — și asta credem despre o pâtisserie bună: răbdare, strat după strat.</p>
+        <p>Millefeuille a început din dorința de a aduce la Chișinău o pâtisserie franceză autentică: aluat foietaj lucrat manual, creme pâtissière proaspete în fiecare zi și o cafea pe măsură — fără scurtături, fără grabă.</p>
+        <p>Atelierul nostru e mic și deschis spre sală: ne place ca oaspeții să vadă procesul, nu doar rezultatul.</p>
+        <div class="stat-row">
+          <div>
+            <div class="stat-num">6h</div>
+            <div class="stat-label">Laminare aluat</div>
+          </div>
+          <div>
+            <div class="stat-num">12</div>
+            <div class="stat-label">Straturi de unt</div>
+          </div>
+          <div>
+            <div class="stat-num">07:30</div>
+            <div class="stat-label">Prima copturã</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-card reveal">
+        <span class="quote-mark">"</span>
+        <p>Un mille-feuille bun nu se grăbește. Foietajul se odihnește, se laminează, se odihnește din nou — și abia apoi devine ceea ce trebuie să fie.</p>
+        <div class="sig">— Chef pâtissier, Millefeuille</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="menu" id="meniu">
+<div class="wrap">
+<div class="section-head"><div><div class="eyebrow">Menu</div><h2>Millefeuille Menu</h2></div><p>Actual menu from the café.</p></div>
+<div class="menu-tabs">
+<button class="menu-tab active" data-tab="breakfast">Petit déjeuner</button>
+<button class="menu-tab" data-tab="mille">Millefeuille</button>
+<button class="menu-tab" data-tab="other">Pâtes, Soupes & Vin</button>
+</div>
+
+<div class="menu-grid active" data-panel="breakfast">
+<div class="menu-item"><div><div class="menu-item-name">Petit déjeuner anglais</div></div><div class="menu-item-price">130 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Omeletle aux crevettes dans un croissant</div></div><div class="menu-item-price">150 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Galette de fromage confiture de cassis et crème fraîche</div></div><div class="menu-item-price">100 LEI</div></div>
+</div>
+
+<div class="menu-grid" data-panel="mille">
+<div class="menu-item"><div><div class="menu-item-name">Millefeuille salé au tartare de saumon</div></div><div class="menu-item-price">160 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Millefeuille salé au tartare de crevettes</div></div><div class="menu-item-price">180 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Salade César aux crevettes</div></div><div class="menu-item-price">160 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Salade au thon à huile d’olive</div></div><div class="menu-item-price">150 LEI</div></div>
+</div>
+
+<div class="menu-grid" data-panel="other">
+<div class="menu-item"><div><div class="menu-item-name">Tagliatelles au prosciutto crudo et asperges à la sauce tomate</div></div><div class="menu-item-price">160 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Tagliatelles aux champignons sauce à la crème</div></div><div class="menu-item-price">160 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Velouté de champignons</div></div><div class="menu-item-price">120 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Velouté de brocolis</div></div><div class="menu-item-price">120 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Assortiment de charcuterie italienne</div></div><div class="menu-item-price">250 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Prosecco Astoria Corderie DOCG</div></div><div class="menu-item-price">75/350 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Vin Mihai Sava Fetească Albă Sec</div></div><div class="menu-item-price">60/240 LEI</div></div>
+<div class="menu-item"><div><div class="menu-item-name">Vin Mihai Sava Rose Merlot Sec</div></div><div class="menu-item-price">60/240 LEI</div></div>
+</div>
+</div>
+</section>
+
+
+<svg class="wave wave-cream" viewBox="0 0 1200 56" preserveAspectRatio="none" style="transform:scaleY(-1)"><path d="M0,28 C150,0 350,56 600,28 C850,0 1050,56 1200,28 L1200,56 L0,56 Z" fill="#1C1A17"></path></svg>
+
+<section class="gallery" id="galerie">
+  <div class="gallery-strip">
+    <div class="g1" data-label="Foietaj, strat cu strat"></div>
+    <div class="g2" data-label="Atelierul nostru"></div>
+    <div class="g3" data-label="Tartă de sezon"></div>
+    <div class="g4" data-label="Café crème"></div>
+  </div>
+</section>
+
+<section class="location" id="locatie">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Locație</div>
+        <h2>Vă așteptăm</h2>
+      </div>
+      <p>În centrul orașului, la cinci minute de Piața Centrală.</p>
+    </div>
+
+    <div class="location-grid">
+      <div class="reveal">
+        <div class="info-block">
+          <div class="info-label">Adresă</div>
+          <div class="info-value">Bulevardul Moscova 1,<br>Chișinău, MD-2068</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Telefon & e-mail</div>
+          <div class="info-value"><a href="tel:+37322123456">+373 61 166 684</a></div>
+          <div class="info-value" style="font-size:17px;margin-top:4px;"><a href="mailto:bonjour@millefeuille.md">bonjour@millefeuille.md</a></div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Program</div>
+          <table class="hours-table">
+            <tr><td>Luni — Vineri</td><td>07:00 — 22:00</td></tr>
+            <tr><td>Sâmbătă</td><td>07:00 — 22:00</td></tr>
+            <tr><td>Duminică</td><td>07:00 — 22:00</td></tr>
+          </table>
+        </div>
+        <div class="info-block" style="margin-bottom:0;">
+          <div class="info-label">Rețele sociale</div>
+          <div class="social-row">
+            <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+            <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2a1 1 0 0 1 1-1Z"/></svg></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-frame reveal">
+        <iframe src="https://www.google.com/maps?q=47.0450044,28.8612096&z=17&output=embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-mark">Millefeuille</div>
+        <p class="footer-tag">Pâtisserie franceză, coaptă zilnic în Chișinău.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <div class="footer-col-title">Navigare</div>
+          <a href="#despre">Despre</a>
+          <a href="#meniu">Meniu</a>
+          <a href="#galerie">Galerie</a>
+          <a href="#locatie">Locație</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Contact</div>
+          <a href="tel:+37322123456">+373 61166684</a>
+          <a href="mailto:bonjour@millefeuille.md">bonjour@millefeuille.md</a>
+          <p>Bulevardul Moscova 1</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Millefeuille. Toate drepturile rezervate.</div>
+      <div>Conținut demonstrativ — de înlocuit cu informații reale.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Hero layers reveal on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.layer').forEach((el, i) => {
+      setTimeout(() => el.classList.add('show'), 120 + i * 90);
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => io.observe(el));
+
+  // Menu tabs
+  const tabs = document.querySelectorAll('.menu-tab');
+  const panels = document.querySelectorAll('.menu-grid');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelector(`.menu-grid[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
